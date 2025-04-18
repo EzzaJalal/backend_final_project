@@ -108,11 +108,13 @@
             <scope>runtime</scope>
         </dependency>
         -->
+
+        <!--PostgreSQL-->
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <!-- Remove runtime scope to ensure H2 is available during test and runtime -->
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
         </dependency>
+       
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
