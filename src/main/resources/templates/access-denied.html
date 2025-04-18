@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Title of the page, appears in the browser tab -->
+    <title>Access Denied - Task Management System</title>
+
+    <!-- Meta tag to make the page responsive on various devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS for styling and responsiveness -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <style>
+      /* Body styling with padding at the top and light background color */
+      body {
+        background-color: #f8f9fa;
+        padding-top: 40px;
+      }
+
+      /* Card styling for the main content box */
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Card header with a gradient background and white text */
+      .card-header {
+        background: linear-gradient(135deg, #ff7675, #fab1a0);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+        font-weight: bold;
+      }
+
+      /* Styling for the primary button, with a gradient and hover effect */
+      .btn-primary {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #5b4dc7, #917bfe);
+      }
+
+      /* Large red error icon for visual emphasis */
+      .error-icon {
+        font-size: 64px;
+        color: #ff7675;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation bar with links to the Dashboard and Login page -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <!-- Navbar toggle button for mobile view -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <!-- Link to the Dashboard page -->
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <!-- Link to the Login page -->
+            <li class="nav-item">
+              <a class="nav-link" href="/api/auth/login-form">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main content container with margin top for spacing -->
+    <div class="container" style="margin-top: 80px">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <!-- Card displaying the Access Denied message -->
+          <div class="card">
+            <div class="card-header py-3">
+              <h3 class="text-center m-0">Access Denied</h3>
+            </div>
+
+            <div class="card-body p-4">
+              <div class="text-center">
+                <!-- Lock icon indicating an error -->
+                <div class="error-icon">🔒</div>
+                <h4 class="mb-3">Permission Error</h4>
+                <!-- Error message displayed dynamically using Thymeleaf -->
+                <p class="mb-4" th:text="${error}">
+                  You don't have permission to access this page.
+                </p>
+
+                <!-- Action buttons: Logout and Return to Dashboard -->
+                <div class="d-grid gap-2">
+                  <!-- Logout form with POST method -->
+                  <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn-primary mb-3">
+                      Logout
+                    </button>
+                  </form>
+
+                  <!-- Link to navigate back to the Dashboard -->
+                  <a th:href="@{/dashboard}" class="btn btn-outline-secondary">
+                    Return to Dashboard
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JavaScript bundle for functionality -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

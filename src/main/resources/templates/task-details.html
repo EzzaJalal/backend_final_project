@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Task Details - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      /* Same styles as provided */
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <!-- Same navbar as provided -->
+    </nav>
+
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="sidebar">
+            <h5 class="mb-3">Main Menu</h5>
+            <a href="/dashboard" class="sidebar-link"> <i>📊</i> Dashboard </a>
+            <a href="/api/admin/users-form" class="sidebar-link">
+              <i>👥</i> Manage Users
+            </a>
+            <a href="/api/admin/tasks-form" class="sidebar-link active">
+              <i>📋</i> Tasks
+            </a>
+            <a href="/api/admin/create-user-form" class="sidebar-link">
+              <i>➕</i> Create User
+            </a>
+            <a href="/api/admin/create-task-form" class="sidebar-link">
+              <i>➕</i> Create Task
+            </a>
+            <a href="/api/admin/search-tasks-form" class="sidebar-link">
+              <i>🔍</i> Search Tasks
+            </a>
+            <hr />
+            <a href="/api/auth/logout" class="sidebar-link text-danger">
+              <i>🚪</i> Logout
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="content-area">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3 th:text="${task.title}">Task Title</h3>
+              <div>
+                <span
+                  th:class="${'badge badge-priority ' + #strings.toLowerCase(task.priority)}"
+                  th:text="${task.priority}"
+                  >Priority</span
+                >
+                <span
+                  th:class="${'badge badge-status ' + #strings.toLowerCase(task.taskStatus)}"
+                  th:text="${task.taskStatus}"
+                  >Status</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="alert alert-success"
+              th:if="${success}"
+              th:text="${success}"
+            ></div>
+            <div
+              class="alert alert-danger"
+              th:if="${error}"
+              th:text="${error}"
+            ></div>
+
+            <div class="task-info">
+              <div class="task-info-item">
+                <h6>Assigned To</h6>
+                <p class="mb-0" th:text="${task.employeeName}">John Doe</p>
+              </div>
+              <div class="task-info-item">
+                <h6>Due Date</h6>
+                <p
+                  class="mb-0"
+                  th:text="${#dates.format(task.dueDate, 'MMM dd, yyyy')}"
+                >
+                  Aug 15, 2023
+                </p>
+              </div>
+              <div class="task-info-item">
+                <h6>Created By</h6>
+                <p class="mb-0">Admin</p>
+              </div>
+            </div>
+
+            <div class="card mb-4">
+              <div class="card-body">
+                <h5 class="card-title">Description</h5>
+                <div class="task-description" th:text="${task.description}">
+                  Task description goes here.
+                </div>
+
+                <div class="task-actions">
+                  <a
+                    th:href="@{/api/admin/edit-task-form/{id}(id=${task.id})}"
+                    class="btn btn-warning action-btn"
+                  >
+                    <i>✏️</i> Edit Task
+                  </a>
+                  <form
+                    th:action="@{/api/admin/task/{id}(id=${task.id})}"
+                    method="post"
+                    style="display: inline"
+                  >
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button
+                      type="submit"
+                      class="btn btn-danger action-btn"
+                      onclick="return confirm('Are you sure you want to delete this task?')"
+                    >
+                      <i>🗑️</i> Delete Task
+                    </button>
+                  </form>
+                  <a
+                    href="/api/admin/tasks-form"
+                    class="btn btn-secondary action-btn"
+                  >
+                    <i>↩️</i> Back to Tasks
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="card">
+              <div class="card-header bg-white">
+                <h5 class="mb-0">Comments</h5>
+              </div>
+              <div class="card-body">
+                <div
+                  th:if="${comments == null || comments.empty}"
+                  class="text-center py-4"
+                >
+                  <p class="text-muted mb-0">
+                    No comments yet. Be the first to add a comment!
+                  </p>
+                </div>
+
+                <div th:each="comment : ${comments}" class="comment-card">
+                  <div class="comment-header">
+                    <span class="comment-author" th:text="${comment.postedBy}"
+                      >Admin</span
+                    >
+                    <span
+                      class="comment-date"
+                      th:text="${#dates.format(comment.createdAt, 'MMM dd, yyyy')}"
+                      >Aug 10, 2023</span
+                    >
+                  </div>
+                  <div class="comment-content" th:text="${comment.content}">
+                    Comment text goes here.
+                  </div>
+                </div>
+
+                <!-- Comment Form -->
+                <div class="comment-form">
+                  <h6 class="mb-3">Add a Comment</h6>
+                  <form
+                    th:action="@{/api/admin/task/{id}/comment(id=${task.id})}"
+                    method="post"
+                  >
+                    <div class="mb-3">
+                      <textarea
+                        class="form-control"
+                        name="content"
+                        rows="3"
+                        placeholder="Write your comment here..."
+                        required
+                      ></textarea>
+                    </div>
+                    <div class="d-grid d-md-flex justify-content-md-end">
+                      <button type="submit" class="btn btn-primary">
+                        Post Comment
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

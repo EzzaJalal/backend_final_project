@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Add Comment - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+      }
+      .sidebar {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        height: 100%;
+      }
+      .sidebar-link {
+        display: block;
+        padding: 12px 15px;
+        border-radius: 5px;
+        color: #212529;
+        text-decoration: none;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #e9ecef;
+        color: #6c5ce7;
+      }
+      .sidebar-link i {
+        margin-right: 10px;
+      }
+      .content-area {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+      }
+      .form-label {
+        font-weight: 500;
+      }
+      .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #e0e0e0;
+      }
+      .form-control:focus {
+        border-color: #6c5ce7;
+        box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
+      }
+      .btn-primary {
+        background-color: #6c5ce7;
+        border-color: #6c5ce7;
+        border-radius: 8px;
+        padding: 10px 20px;
+      }
+      .btn-primary:hover {
+        background-color: #5b4bd4;
+        border-color: #5b4bd4;
+      }
+      .task-info {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/api/admin/users-form">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/api/admin/tasks-form">Tasks</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                ADMIN
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdown"
+              >
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="sidebar">
+            <h5 class="mb-3">Main Menu</h5>
+            <a href="/" class="sidebar-link"> <i>📊</i> Dashboard </a>
+            <a href="/api/admin/users-form" class="sidebar-link">
+              <i>👥</i> Manage Users
+            </a>
+            <a href="/api/admin/tasks-form" class="sidebar-link active">
+              <i>📋</i> Tasks
+            </a>
+            <a href="/api/admin/create-user-form" class="sidebar-link">
+              <i>➕</i> Create User
+            </a>
+            <a href="/api/admin/create-task-form" class="sidebar-link">
+              <i>➕</i> Create Task
+            </a>
+            <a href="/api/admin/search-tasks-form" class="sidebar-link">
+              <i>🔍</i> Search Tasks
+            </a>
+            <hr />
+            <a href="/logout" class="sidebar-link text-danger">
+              <i>🚪</i> Logout
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="content-area">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3>Add Admin Comment</h3>
+              <a
+                th:href="@{/api/admin/task-details/{id}(id=${taskId})}"
+                class="btn btn-outline-secondary"
+              >
+                <i>↩️</i> Back to Task
+              </a>
+            </div>
+
+            <div
+              class="alert alert-success"
+              th:if="${success}"
+              th:text="${success}"
+            ></div>
+            <div
+              class="alert alert-danger"
+              th:if="${error}"
+              th:text="${error}"
+            ></div>
+
+            <div class="task-info mb-4">
+              <h5 class="mb-2">
+                Task: <span th:text="${taskTitle}">Task Title</span>
+              </h5>
+              <p class="text-muted mb-0">
+                Add your administrative comment to this task. Your feedback is
+                important for task management and oversight.
+              </p>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <form
+                  th:action="@{/api/admin/add-comment-form/{id}(id=${taskId})}"
+                  method="post"
+                >
+                  <div class="mb-3">
+                    <label for="content" class="form-label">Comment</label>
+                    <textarea
+                      class="form-control"
+                      id="content"
+                      name="content"
+                      rows="5"
+                      placeholder="Write your administrative comment here..."
+                      required
+                    ></textarea>
+                    <div class="form-text">
+                      Add any instructions, feedback, or information that would
+                      help with task completion.
+                    </div>
+                  </div>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a
+                      th:href="@{/api/admin/task-details/{id}(id=${taskId})}"
+                      class="btn btn-secondary me-md-2"
+                      >Cancel</a
+                    >
+                    <button type="submit" class="btn btn-primary">
+                      Post Comment
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>My Tasks - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+      }
+      .sidebar {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        height: 100%;
+      }
+      .sidebar-link {
+        display: block;
+        padding: 12px 15px;
+        border-radius: 5px;
+        color: #212529;
+        text-decoration: none;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #e9ecef;
+        color: #6c5ce7;
+      }
+      .sidebar-link i {
+        margin-right: 10px;
+      }
+      .content-area {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+      }
+      .task-card {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+      }
+      .task-card:hover {
+        transform: translateY(-5px);
+      }
+      .task-header {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-bottom: 1px solid #e9ecef;
+      }
+      .task-body {
+        padding: 15px;
+      }
+      .task-footer {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-top: 1px solid #e9ecef;
+      }
+      .badge-priority {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+      }
+      .badge-priority.high {
+        background-color: #ff7675;
+        color: white;
+      }
+      .badge-priority.medium {
+        background-color: #fdcb6e;
+        color: #333;
+      }
+      .badge-priority.low {
+        background-color: #55efc4;
+        color: #333;
+      }
+      .badge-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+      }
+      .badge-status.pending {
+        background-color: #74b9ff;
+        color: white;
+      }
+      .badge-status.inprogress {
+        background-color: #a29bfe;
+        color: white;
+      }
+      .badge-status.completed {
+        background-color: #00b894;
+        color: white;
+      }
+      .badge-status.postponed {
+        background-color: #fdcb6e;
+        color: #333;
+      }
+      .badge-status.cancelled {
+        background-color: #636e72;
+        color: white;
+      }
+      .action-btn {
+        border-radius: 20px;
+        padding: 5px 15px;
+        font-size: 0.8rem;
+      }
+      .pagination {
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .pagination .page-item .page-link {
+        color: #6c5ce7;
+      }
+      .pagination .page-item.active .page-link {
+        background-color: #6c5ce7;
+        border-color: #6c5ce7;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/api/employee/tasks-form"
+                >My Tasks</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                EMPLOYEE
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdown"
+              >
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="sidebar">
+            <h5 class="mb-3">Main Menu</h5>
+            <a href="/" class="sidebar-link"> <i>📊</i> Dashboard </a>
+            <a href="/api/employee/tasks-form" class="sidebar-link active">
+              <i>📋</i> My Tasks
+            </a>
+            <hr />
+            <a href="/logout" class="sidebar-link text-danger">
+              <i>🚪</i> Logout
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="content-area">
+            <h3 class="mb-4">My Assigned Tasks</h3>
+
+            <div
+              class="alert alert-success"
+              th:if="${success}"
+              th:text="${success}"
+            ></div>
+            <div
+              class="alert alert-danger"
+              th:if="${error}"
+              th:text="${error}"
+            ></div>
+
+            <div th:if="${tasks.empty}" class="alert alert-info">
+              You have no assigned tasks at the moment.
+            </div>
+
+            <div th:each="task : ${tasks}" class="card task-card">
+              <div
+                class="task-header d-flex justify-content-between align-items-center"
+              >
+                <h5 class="mb-0" th:text="${task.title}">Task Title</h5>
+                <div>
+                  <span
+                    th:class="${'badge badge-priority ' + #strings.toLowerCase(task.priority)}"
+                    th:text="${task.priority}"
+                    >Priority</span
+                  >
+                  <span
+                    th:class="${'badge badge-status ' + #strings.toLowerCase(task.taskStatus)}"
+                    th:text="${task.taskStatus}"
+                    >Status</span
+                  >
+                </div>
+              </div>
+              <div class="task-body">
+                <p class="text-muted mb-2">
+                  <strong>Due Date:</strong>
+                  <span th:text="${#dates.format(task.dueDate, 'MMM dd, yyyy')}"
+                    >Due Date</span
+                  >
+                </p>
+                <p class="mb-0" th:text="${task.description}">
+                  Task description goes here...
+                </p>
+              </div>
+              <div class="task-footer d-flex justify-content-end gap-2">
+                <a
+                  th:href="@{/api/employee/task-details/{id}(id=${task.id})}"
+                  class="btn btn-info btn-sm action-btn"
+                >
+                  View Details
+                </a>
+                <a
+                  th:href="@{/api/employee/update-task-status-form/{id}(id=${task.id})}"
+                  class="btn btn-warning btn-sm action-btn"
+                >
+                  Update Status
+                </a>
+                <a
+                  th:href="@{/api/employee/add-comment-form/{id}(id=${task.id})}"
+                  class="btn btn-primary btn-sm action-btn"
+                >
+                  Add Comment
+                </a>
+              </div>
+            </div>
+
+            <!-- Pagination -->
+            <nav th:if="${totalPages > 1}">
+              <ul class="pagination">
+                <li
+                  th:class="${currentPage == 0} ? 'page-item disabled' : 'page-item'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/api/employee/tasks-form(page=${currentPage - 1})}"
+                    aria-label="Previous"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li
+                  th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                  th:class="${currentPage == i} ? 'page-item active' : 'page-item'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/api/employee/tasks-form(page=${i})}"
+                    th:text="${i + 1}"
+                    >1</a
+                  >
+                </li>
+                <li
+                  th:class="${currentPage == totalPages - 1} ? 'page-item disabled' : 'page-item'"
+                >
+                  <a
+                    class="page-link"
+                    th:href="@{/api/employee/tasks-form(page=${currentPage + 1})}"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

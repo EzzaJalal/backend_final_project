@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Update Task Status - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+      }
+      .sidebar {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        height: 100%;
+      }
+      .sidebar-link {
+        display: block;
+        padding: 12px 15px;
+        border-radius: 5px;
+        color: #212529;
+        text-decoration: none;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #e9ecef;
+        color: #6c5ce7;
+      }
+      .sidebar-link i {
+        margin-right: 10px;
+      }
+      .content-area {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+      }
+      .task-info {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+      .badge-priority {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+      }
+      .badge-priority.high {
+        background-color: #ff7675;
+        color: white;
+      }
+      .badge-priority.medium {
+        background-color: #fdcb6e;
+        color: #333;
+      }
+      .badge-priority.low {
+        background-color: #55efc4;
+        color: #333;
+      }
+      .badge-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.75rem;
+      }
+      .badge-status.pending {
+        background-color: #74b9ff;
+        color: white;
+      }
+      .badge-status.inprogress {
+        background-color: #a29bfe;
+        color: white;
+      }
+      .badge-status.completed {
+        background-color: #00b894;
+        color: white;
+      }
+      .badge-status.postponed {
+        background-color: #fdcb6e;
+        color: #333;
+      }
+      .badge-status.cancelled {
+        background-color: #636e72;
+        color: white;
+      }
+      .form-label {
+        font-weight: 500;
+      }
+      .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #e0e0e0;
+      }
+      .form-control:focus {
+        border-color: #6c5ce7;
+        box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.25);
+      }
+      .btn-primary {
+        background-color: #6c5ce7;
+        border-color: #6c5ce7;
+        border-radius: 8px;
+        padding: 10px 20px;
+      }
+      .btn-primary:hover {
+        background-color: #5b4bd4;
+        border-color: #5b4bd4;
+      }
+      .status-option {
+        cursor: pointer;
+        padding: 15px;
+        border-radius: 10px;
+        border: 2px solid #e0e0e0;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+      }
+      .status-option:hover {
+        border-color: #6c5ce7;
+        background-color: #f8f9fa;
+      }
+      .status-option.active {
+        border-color: #6c5ce7;
+        background-color: rgba(108, 92, 231, 0.1);
+      }
+      .status-option-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .status-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 20px;
+      }
+      .status-description {
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="/api/employee/tasks-form"
+                >My Tasks</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                EMPLOYEE
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdown"
+              >
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="sidebar">
+            <h5 class="mb-3">Main Menu</h5>
+            <a href="/" class="sidebar-link"> <i>📊</i> Dashboard </a>
+            <a href="/api/employee/tasks-form" class="sidebar-link active">
+              <i>📋</i> My Tasks
+            </a>
+            <hr />
+            <a href="/logout" class="sidebar-link text-danger">
+              <i>🚪</i> Logout
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="content-area">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h3>Update Task Status</h3>
+              <a
+                href="/api/employee/tasks-form"
+                class="btn btn-outline-secondary"
+              >
+                <i>↩️</i> Back to Tasks
+              </a>
+            </div>
+
+            <div
+              class="alert alert-success"
+              th:if="${success}"
+              th:text="${success}"
+            ></div>
+            <div
+              class="alert alert-danger"
+              th:if="${error}"
+              th:text="${error}"
+            ></div>
+
+            <div class="task-info mb-4">
+              <h5 class="mb-3" th:text="${task.title}">Task Title</h5>
+              <div class="d-flex mb-3">
+                <span
+                  th:class="${'badge badge-priority ' + #strings.toLowerCase(task.priority)}"
+                  th:text="${task.priority}"
+                  >Priority</span
+                >
+                <span class="mx-2">|</span>
+                <span
+                  th:class="${'badge badge-status ' + #strings.toLowerCase(task.taskStatus)}"
+                  th:text="${task.taskStatus}"
+                  >Status</span
+                >
+              </div>
+              <p class="mb-2">
+                <strong>Due Date:</strong>
+                <span th:text="${#dates.format(task.dueDate, 'MMM dd, yyyy')}"
+                  >Due Date</span
+                >
+              </p>
+              <p class="mb-0" th:text="${task.description}">
+                Task description goes here...
+              </p>
+            </div>
+
+            <form
+              th:action="@{/api/employee/update-task-status-form/{id}(id=${task.id})}"
+              method="post"
+            >
+              <h5 class="mb-3">Select New Status</h5>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <div
+                    class="status-option"
+                    onclick="selectStatus(this, 'INPROGRESS')"
+                    th:classappend="${task.taskStatus == 'INPROGRESS'} ? 'active' : ''"
+                  >
+                    <div class="status-option-header">
+                      <div
+                        class="status-icon"
+                        style="background-color: #a29bfe; color: white"
+                      >
+                        ⏳
+                      </div>
+                      <div>
+                        <h6 class="mb-0">In Progress</h6>
+                      </div>
+                    </div>
+                    <div class="status-description">
+                      I am actively working on this task.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div
+                    class="status-option"
+                    onclick="selectStatus(this, 'COMPLETED')"
+                    th:classappend="${task.taskStatus == 'COMPLETED'} ? 'active' : ''"
+                  >
+                    <div class="status-option-header">
+                      <div
+                        class="status-icon"
+                        style="background-color: #00b894; color: white"
+                      >
+                        ✅
+                      </div>
+                      <div>
+                        <h6 class="mb-0">Completed</h6>
+                      </div>
+                    </div>
+                    <div class="status-description">
+                      I have completed this task.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div
+                    class="status-option"
+                    onclick="selectStatus(this, 'POSTPONED')"
+                    th:classappend="${task.taskStatus == 'POSTPONED'} ? 'active' : ''"
+                  >
+                    <div class="status-option-header">
+                      <div
+                        class="status-icon"
+                        style="background-color: #fdcb6e; color: #333"
+                      >
+                        ⏱️
+                      </div>
+                      <div>
+                        <h6 class="mb-0">Postponed</h6>
+                      </div>
+                    </div>
+                    <div class="status-description">
+                      I need to postpone this task for now.
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div
+                    class="status-option"
+                    onclick="selectStatus(this, 'PENDING')"
+                    th:classappend="${task.taskStatus == 'PENDING'} ? 'active' : ''"
+                  >
+                    <div class="status-option-header">
+                      <div
+                        class="status-icon"
+                        style="background-color: #74b9ff; color: white"
+                      >
+                        ⏸️
+                      </div>
+                      <div>
+                        <h6 class="mb-0">Pending</h6>
+                      </div>
+                    </div>
+                    <div class="status-description">
+                      This task is pending, not started yet.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <input
+                type="hidden"
+                id="statusInput"
+                name="status"
+                th:value="${task.taskStatus}"
+              />
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                <a
+                  href="/api/employee/tasks-form"
+                  class="btn btn-secondary me-md-2"
+                  >Cancel</a
+                >
+                <button type="submit" class="btn btn-primary">
+                  Update Status
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script>
+      function selectStatus(element, status) {
+        // Remove active class from all options
+        document.querySelectorAll(".status-option").forEach((option) => {
+          option.classList.remove("active");
+        });
+
+        // Add active class to the selected option
+        element.classList.add("active");
+
+        // Update the hidden input value
+        document.getElementById("statusInput").value = status;
+        console.log("Status updated to: " + status);
+
+        // Add visual feedback
+        const feedbackElement = document.createElement("div");
+        feedbackElement.textContent = "Status selected: " + status;
+        feedbackElement.className = "alert alert-info mt-2";
+        feedbackElement.style.padding = "5px 10px";
+        feedbackElement.style.fontSize = "0.8rem";
+
+        // Remove any existing feedback
+        const existingFeedback = document.querySelector(".status-feedback");
+        if (existingFeedback) {
+          existingFeedback.remove();
+        }
+
+        // Add feedback near the selected status
+        feedbackElement.classList.add("status-feedback");
+        element.appendChild(feedbackElement);
+      }
+
+      // Initialize status selection based on current value
+      document.addEventListener("DOMContentLoaded", function () {
+        const currentStatus = document.getElementById("statusInput").value;
+        if (currentStatus) {
+          const statusElement = document.querySelector(
+            '.status-option[onclick*="' + currentStatus + '"]'
+          );
+          if (statusElement) {
+            // Make sure the correct status is visually selected
+            statusElement.classList.add("active");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

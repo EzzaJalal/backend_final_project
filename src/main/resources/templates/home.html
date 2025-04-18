@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      .hero-section {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        color: white;
+        padding: 80px 0;
+        border-radius: 10px;
+      }
+      .feature-card {
+        border: none;
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .cta-button {
+        padding: 12px 25px;
+        font-weight: 600;
+        border-radius: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/api/auth/login-form}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/api/auth/signup-form}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="hero-section text-center p-5 mb-5">
+        <h1 class="display-4 fw-bold">Manage Tasks Efficiently</h1>
+        <p class="lead my-4">
+          A powerful platform for teams to organize, track, and complete tasks
+        </p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <a
+            class="btn btn-light btn-lg cta-button"
+            th:href="@{/api/auth/signup-form}"
+            >Get Started</a
+          >
+          <a
+            class="btn btn-outline-light btn-lg cta-button"
+            th:href="@{/api/auth/login-form}"
+            >Log In</a
+          >
+        </div>
+      </div>
+
+      <div class="row mt-5 mb-5">
+        <div class="col-md-4">
+          <div class="card feature-card h-100 p-4">
+            <div class="card-body text-center">
+              <div class="feature-icon text-primary">📋</div>
+              <h3 class="card-title">Task Management</h3>
+              <p class="card-text text-muted">
+                Create, assign, and track tasks with ease. Set priorities and
+                deadlines to keep your team on schedule.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card h-100 p-4">
+            <div class="card-body text-center">
+              <div class="feature-icon text-success">👥</div>
+              <h3 class="card-title">Team Collaboration</h3>
+              <p class="card-text text-muted">
+                Collaborate with your team members through comments and
+                real-time updates on task progress.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card feature-card h-100 p-4">
+            <div class="card-body text-center">
+              <div class="feature-icon text-info">📊</div>
+              <h3 class="card-title">Progress Tracking</h3>
+              <p class="card-text text-muted">
+                Monitor project progress with comprehensive dashboards and
+                detailed task status updates.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Task Management System</h5>
+            <p class="small">
+              A powerful tool for managing tasks and projects.
+            </p>
+          </div>
+          <div class="col-md-6 text-end">
+            <p class="small">
+              © 2025 Task Management System. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

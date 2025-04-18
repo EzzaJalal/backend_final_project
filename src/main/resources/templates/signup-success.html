@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Registration Successful - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .card-header {
+        background: linear-gradient(135deg, #00b894, #55efc4);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        border: none;
+        border-radius: 5px;
+        padding: 12px 25px;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #5b4dc7, #917bfe);
+      }
+      .btn-secondary {
+        background: #e9ecef;
+        color: #495057;
+        border: none;
+        border-radius: 5px;
+        padding: 12px 25px;
+      }
+      .btn-secondary:hover {
+        background: #dee2e6;
+        color: #212529;
+      }
+      .success-container {
+        margin-top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/api/auth/login-form}">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/api/auth/signup-form}"
+                >Sign Up</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container success-container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header py-3">
+              <h3 class="text-center m-0">Registration Successful</h3>
+            </div>
+            <div class="card-body p-4 text-center">
+              <div class="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="64"
+                  height="64"
+                  fill="#00b894"
+                  class="bi bi-check-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  />
+                  <path
+                    d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"
+                  />
+                </svg>
+              </div>
+              <div
+                class="alert alert-success"
+                role="alert"
+                th:if="${success}"
+                th:text="${success}"
+              >
+                User registered successfully. Please check your email for
+                verification.
+              </div>
+              <p class="mb-3">
+                Thank you for registering with our Task Management System.
+              </p>
+              <p class="mb-4">
+                An email has been sent to your email address with verification
+                instructions.
+              </p>
+              <div class="d-grid gap-3 d-md-flex justify-content-center">
+                <a th:href="@{/api/auth/login-form}" class="btn btn-primary"
+                  >Proceed to Login</a
+                >
+                <a th:href="@{/}" class="btn btn-secondary">Return to Home</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

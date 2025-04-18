@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Page title and responsive viewport meta tag -->
+    <title>Error - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <!-- Custom inline styles for page layout and visual enhancements -->
+    <style>
+      body {
+        background-color: #f8f9fa; /* Light gray background for clean UI */
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+      }
+      .card-header {
+        background: linear-gradient(
+          135deg,
+          #e74c3c,
+          #ff7675
+        ); /* Gradient red for header */
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+      }
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          #6c5ce7,
+          #a29bfe
+        ); /* Gradient purple button */
+        border: none;
+        border-radius: 5px;
+        padding: 12px 25px;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(
+          135deg,
+          #5b4dc7,
+          #917bfe
+        ); /* Darker gradient on hover */
+      }
+      .error-container {
+        margin-top: 100px; /* Vertical spacing for error card */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation bar using Bootstrap with brand and links -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <!-- Brand/logo linking to home -->
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <!-- Responsive menu button for mobile view -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collapsible nav items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <!-- Login link using Thymeleaf routing -->
+              <a class="nav-link" th:href="@{/api/auth/login-form}">Login</a>
+            </li>
+            <li class="nav-item">
+              <!-- Signup link using Thymeleaf routing -->
+              <a class="nav-link" th:href="@{/api/auth/signup-form}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main error message container -->
+    <div class="container error-container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <!-- Card component for visual emphasis -->
+          <div class="card">
+            <!-- Error header section with title -->
+            <div class="card-header py-3">
+              <h3 class="text-center m-0">Error</h3>
+            </div>
+            <!-- Error body content -->
+            <div class="card-body p-4 text-center">
+              <!-- Warning icon -->
+              <div class="mb-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="64"
+                  height="64"
+                  fill="#e74c3c"
+                  class="bi bi-exclamation-circle"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
+                  />
+                  <path
+                    d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"
+                  />
+                </svg>
+              </div>
+
+              <!-- Conditional display of error message if available -->
+              <div
+                class="alert alert-danger"
+                role="alert"
+                th:if="${error}"
+                th:text="${error}"
+              >
+                An error occurred.
+              </div>
+
+              <!-- User guidance message -->
+              <p class="mb-4">
+                We apologize for the inconvenience. Please try again later or
+                contact support if the problem persists.
+              </p>
+
+              <!-- Link to return to home page -->
+              <a th:href="@{/}" class="btn btn-primary">Return to Home Page</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS for interactive components -->
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

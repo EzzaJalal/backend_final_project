@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Dashboard - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .navbar {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        margin-bottom: 20px;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .card-header {
+        border-bottom: none;
+        padding: 20px;
+        border-radius: 10px 10px 0 0 !important;
+      }
+      .bg-gradient-primary {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        color: white;
+      }
+      .bg-gradient-info {
+        background: linear-gradient(135deg, #0984e3, #74b9ff);
+        color: white;
+      }
+      .bg-gradient-success {
+        background: linear-gradient(135deg, #00b894, #55efc4);
+        color: white;
+      }
+      .bg-gradient-warning {
+        background: linear-gradient(135deg, #fdcb6e, #ffeaa7);
+        color: #333;
+      }
+      .bg-gradient-danger {
+        background: linear-gradient(135deg, #ff7675, #fab1a0);
+        color: white;
+      }
+      .stats-card {
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      .stats-icon {
+        font-size: 36px;
+        margin-bottom: 10px;
+      }
+      .feature-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .feature-icon {
+        font-size: 28px;
+        margin-bottom: 15px;
+        display: inline-block;
+        padding: 15px;
+        border-radius: 50%;
+        color: white;
+      }
+      .sidebar {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        height: 100%;
+      }
+      .sidebar-link {
+        display: block;
+        padding: 12px 15px;
+        border-radius: 5px;
+        color: #212529;
+        text-decoration: none;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+      }
+      .sidebar-link:hover,
+      .sidebar-link.active {
+        background-color: #e9ecef;
+        color: #6c5ce7;
+      }
+      .sidebar-link i {
+        margin-right: 10px;
+      }
+      .content-area {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+      }
+      .action-btn {
+        border-radius: 8px;
+        padding: 8px 16px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item" th:if="${userRole.name() == 'ADMIN'}">
+              <a class="nav-link" th:href="@{/api/admin/users-form}">Users</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                th:href="${userRole.name() == 'ADMIN'} ? @{/api/admin/tasks-form} : @{/api/employee/tasks-form}"
+                >Tasks</a
+              >
+            </li>
+            <li class="nav-item" th:if="${userRole.name() == 'ADMIN'}">
+              <a class="nav-link" th:href="@{/api/admin/search-tasks-form}"
+                >Search</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span th:text="${userRole}">Role</span>
+              </a>
+              <ul
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="navbarDropdown"
+              >
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="/api/auth/logout">Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-3 mb-4">
+          <div class="sidebar">
+            <h5 class="mb-3">Main Menu</h5>
+            <a href="/dashboard" class="sidebar-link active">
+              <i>📊</i> Dashboard
+            </a>
+
+            <!-- Admin-only Menu Items -->
+            <div th:if="${userRole.name() == 'ADMIN'}">
+              <h6 class="mt-4 mb-2 ps-3 text-muted">User Management</h6>
+              <a th:href="@{/api/admin/users-form}" class="sidebar-link">
+                <i>👥</i> View Employees
+              </a>
+              <a th:href="@{/api/admin/create-user-form}" class="sidebar-link">
+                <i>➕</i> Add New Employee
+              </a>
+
+              <h6 class="mt-4 mb-2 ps-3 text-muted">Task Management</h6>
+              <a th:href="@{/api/admin/tasks-form}" class="sidebar-link">
+                <i>📋</i> All Tasks
+              </a>
+              <a th:href="@{/api/admin/create-task-form}" class="sidebar-link">
+                <i>✏️</i> Create New Task
+              </a>
+              <a th:href="@{/api/admin/search-tasks-form}" class="sidebar-link">
+                <i>🔍</i> Search Tasks
+              </a>
+            </div>
+
+            <!-- Employee-only Menu Items -->
+            <div th:if="${userRole.name() == 'EMPLOYEE'}">
+              <a th:href="@{/api/employee/tasks-form}" class="sidebar-link">
+                <i>📋</i> My Tasks
+              </a>
+            </div>
+
+            <hr />
+            <a href="/api/auth/logout" class="sidebar-link text-danger">
+              <i>🚪</i> Logout
+            </a>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="content-area">
+            <h3 class="mb-4">
+              Welcome, <span th:text="${userName}">User</span>!
+            </h3>
+
+            <!-- Admin Dashboard -->
+            <div th:if="${userRole.name() == 'ADMIN'}" class="admin-dashboard">
+              <div class="row mb-4">
+                <div class="col-md-12 mb-4">
+                  <div class="alert alert-info">
+                    <h5>Task Management System - Admin Dashboard</h5>
+                    <p class="mb-0">
+                      As an administrator, you have full access to manage tasks,
+                      employees, and monitor progress.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <div class="card stats-card bg-gradient-primary">
+                    <div class="stats-icon">📊</div>
+                    <h5>Task Management</h5>
+                    <a
+                      href="/api/admin/tasks-form"
+                      class="text-white text-decoration-none"
+                      >View All Tasks →</a
+                    >
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card stats-card bg-gradient-info">
+                    <div class="stats-icon">👥</div>
+                    <h5>Employee Management</h5>
+                    <a
+                      href="/api/admin/users-form"
+                      class="text-white text-decoration-none"
+                      >View All Employees →</a
+                    >
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card stats-card bg-gradient-success">
+                    <div class="stats-icon">🔍</div>
+                    <h5>Search Tasks</h5>
+                    <a
+                      href="/api/admin/search-tasks-form"
+                      class="text-white text-decoration-none"
+                      >Search by Title →</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <h4 class="mb-3">Administrative Features</h4>
+              <div class="row">
+                <div class="col-md-4 mb-4">
+                  <div class="card feature-card">
+                    <div class="card-body text-center">
+                      <span class="feature-icon bg-gradient-primary">✏️</span>
+                      <h5>Task Creation</h5>
+                      <p class="text-muted mb-3">
+                        Create new tasks and assign them to employees
+                      </p>
+                      <a
+                        href="/api/admin/create-task-form"
+                        class="btn btn-sm btn-primary action-btn"
+                        >Create Task</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card feature-card">
+                    <div class="card-body text-center">
+                      <span class="feature-icon bg-gradient-info">👤</span>
+                      <h5>Employee Management</h5>
+                      <p class="text-muted mb-3">
+                        Add, view or remove employees from the system
+                      </p>
+                      <a
+                        href="/api/admin/create-user-form"
+                        class="btn btn-sm btn-info action-btn"
+                        >Add Employee</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card feature-card">
+                    <div class="card-body text-center">
+                      <span class="feature-icon bg-gradient-danger">✏️</span>
+                      <h5>Task Editing</h5>
+                      <p class="text-muted mb-3">
+                        Edit task details, reassign, or update status
+                      </p>
+                      <a
+                        href="/api/admin/tasks-form"
+                        class="btn btn-sm btn-danger action-btn"
+                        >Manage Tasks</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card feature-card">
+                    <div class="card-body text-center">
+                      <span class="feature-icon bg-gradient-warning">💬</span>
+                      <h5>Comment Management</h5>
+                      <p class="text-muted mb-3">
+                        Add comments to tasks for communication
+                      </p>
+                      <a
+                        href="/api/admin/tasks-form"
+                        class="btn btn-sm btn-warning action-btn"
+                        >View Tasks</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card feature-card">
+                    <div class="card-body text-center">
+                      <span class="feature-icon bg-gradient-success">🔍</span>
+                      <h5>Task Search</h5>
+                      <p class="text-muted mb-3">
+                        Find tasks quickly by title or other criteria
+                      </p>
+                      <a
+                        href="/api/admin/search-tasks-form"
+                        class="btn btn-sm btn-success action-btn"
+                        >Search Tasks</a
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <div class="card feature-card">
+                    <div class="card-body text-center">
+                      <span class="feature-icon bg-gradient-danger">🗑️</span>
+                      <h5>Task Deletion</h5>
+                      <p class="text-muted mb-3">
+                        Remove tasks that are no longer needed
+                      </p>
+                      <a
+                        href="/api/admin/tasks-form"
+                        class="btn btn-sm btn-danger action-btn"
+                        >Manage Tasks</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Employee Dashboard -->
+            <div
+              th:if="${userRole.name() == 'EMPLOYEE'}"
+              class="employee-dashboard"
+            >
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div class="card stats-card bg-gradient-primary">
+                    <div class="stats-icon">📋</div>
+                    <h5>My Tasks</h5>
+                    <a
+                      href="/api/employee/tasks-form"
+                      class="text-white text-decoration-none"
+                      >View Assigned Tasks →</a
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card stats-card bg-gradient-success">
+                    <div class="stats-icon">📈</div>
+                    <h5>Task Progress</h5>
+                    <a
+                      href="/api/employee/tasks-form"
+                      class="text-white text-decoration-none"
+                      >Update Task Status →</a
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <div class="card mb-4">
+                <div class="card-header bg-white">
+                  <h5 class="mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                  <div class="d-grid gap-2 d-md-flex">
+                    <a href="/api/employee/tasks-form" class="btn btn-primary"
+                      >View My Tasks</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

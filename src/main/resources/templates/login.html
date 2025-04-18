@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Login - Task Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      }
+      .card-header {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+      }
+      .form-control {
+        border-radius: 5px;
+        padding: 12px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+        border: none;
+        border-radius: 5px;
+        padding: 12px;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #5b4dc7, #917bfe);
+      }
+      .login-container {
+        margin-top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+          <span class="text-primary">TaskManagement</span>System
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" th:href="@{/api/auth/login-form}"
+                >Login</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/api/auth/signup-form}">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container login-container">
+      <div class="row justify-content-center">
+        <div class="col-md-5">
+          <div class="card">
+            <div class="card-header py-3">
+              <h3 class="text-center m-0">Login</h3>
+            </div>
+            <div class="card-body p-4">
+              <div
+                th:if="${error}"
+                class="alert alert-danger"
+                role="alert"
+                th:text="${error}"
+              ></div>
+              <form
+                th:action="@{/api/auth/login-form}"
+                method="post"
+                th:object="${authenticationRequest}"
+              >
+                <div class="mb-4">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    th:field="*{email}"
+                    required
+                    placeholder="Enter your email"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label for="password" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    th:field="*{password}"
+                    required
+                    placeholder="Enter your password"
+                  />
+                </div>
+                <div class="d-grid mb-4">
+                  <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+                <div class="text-center">
+                  <a
+                    th:href="@{/api/auth/forgot-password}"
+                    class="text-decoration-none"
+                    >Forgot Password?</a
+                  >
+                </div>
+              </form>
+              <hr class="my-4" />
+              <div class="text-center">
+                <p class="mb-0">
+                  Don't have an account?
+                  <a
+                    th:href="@{/api/auth/signup-form}"
+                    class="text-decoration-none fw-bold"
+                    >Sign up</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
