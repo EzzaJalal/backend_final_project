@@ -1,132 +1,134 @@
-📝 Task Management System
-A full-stack Task Management System built using Spring Boot, Maven, JWT Authentication, Thymeleaf, Bootstrap, and JavaScript.
+# 📝 Task Management System
 
-📌 Features
-This project demonstrates a fully functional task management system with two distinct user roles: Admin and Employee.
+A full-stack Task Management System built using **Spring Boot**, **Maven**, **JWT Authentication**, **Thymeleaf**, **Bootstrap**, and **JavaScript**.
 
-🔐 Authentication
+---
 
-User Sign Up
+## 📌 Features
 
-Login
+This project demonstrates a fully functional task management system with two distinct user roles: **Admin** and **Employee**.
 
-Password Reset
+### 🔐 Authentication
 
-Email Verification
+- User Sign Up  
+- Login  
+- Password Reset  
+- Email Verification  
 
-👑 Admin Capabilities
-Create, read, update, and delete tasks
+### 👑 Admin Capabilities
 
-Assign tasks to employees
+- Create, read, update, and delete tasks  
+- Assign tasks to employees  
+- Add and remove employees  
+- Post and view comments on tasks  
+- Search tasks by title  
+- View all users and task data  
 
-Add and remove employees
+### 👤 Employee Capabilities
 
-Post and view comments on tasks
+- View assigned tasks by user ID  
+- Update task status  
+- Post comments for assigned tasks  
+- View comments for their tasks  
 
-Search tasks by title
+---
 
-View all users and task data
+## 🚀 Technologies Used
 
-👤 Employee Capabilities
-View assigned tasks by user ID
+- **Backend:** Spring Boot, Spring Security, JWT, Maven  
+- **Frontend:** Thymeleaf, Bootstrap, JavaScript  
+- **Database:** *(Add your database here – e.g., PostgreSQL/MariaDB)*  
+- **Email Service:** *(e.g., JavaMailSender)*  
 
-Update task status
+---
 
-Post comments for assigned tasks
+## 🔗 API Endpoints
 
-View comments for their tasks
+### 🔒 Authentication
 
-🚀 Technologies Used
-Backend: Spring Boot, Spring Security, JWT, Maven
+- **Sign Up (POST):**  
+  `http://localhost:8080/api/auth/signup`
 
-Frontend: Thymeleaf, Bootstrap, JavaScript
+- **Login (POST):**  
+  `http://localhost:8080/api/auth/login`
 
-Database: (You can add this – e.g., PostgreSQL/MariaDB)
+- **Verify Email (GET):**  
+  `http://localhost:8080/api/auth/verify-email?token=`
 
-Email Service: (You can mention JavaMailSender or service used)
+- **Forgot Password (POST):**  
+  `http://localhost:8080/api/auth/forgot-password?email=john.doe@example.com`
 
-🔗 API Endpoints
-🔒 Authentication
-Sign Up (POST):
-http://localhost:8080/api/auth/signup
+- **Reset Password (POST):**  
+  `http://localhost:8080/api/auth/reset-password?token=&newPassword=newpass123`
 
-Login (POST):
-http://localhost:8080/api/auth/login
+---
 
-Verify Email (GET):
-http://localhost:8080/api/auth/verify-email?token=
+### 👑 Admin APIs
 
-Forgot Password (POST):
-http://localhost:8080/api/auth/forgot-password?email=john.doe@example.com
+- **Get All Users (GET):**  
+  `http://localhost:8080/api/admin/users`
 
-Reset Password (POST):
-http://localhost:8080/api/auth/reset-password?token=&newPassword=newpass123
+- **Create User (POST):**  
+  `http://localhost:8080/api/admin/user`
 
-👑 Admin APIs
-Get All Users (GET):
-http://localhost:8080/api/admin/users
+- **Delete User (DELETE):**  
+  `http://localhost:8080/api/admin/user/{userId}`
 
-Create User (POST):
-http://localhost:8080/api/admin/user
+- **Create Task (POST):**  
+  `http://localhost:8080/api/admin/task`
 
-Delete User (DELETE):
-http://localhost:8080/api/admin/user/{userId}
+- **Get All Tasks (GET):**  
+  `http://localhost:8080/api/admin/tasks?page=0&size=10`
 
-Create Task (POST):
-http://localhost:8080/api/admin/task
+- **Delete Task (DELETE):**  
+  `http://localhost:8080/api/admin/task/{taskId}`
 
-Get All Tasks (GET):
-http://localhost:8080/api/admin/tasks?page=0&size=10
+- **Get Task by ID (GET):**  
+  `http://localhost:8080/api/admin/task/{taskId}`
 
-Delete Task (DELETE):
-http://localhost:8080/api/admin/task/{taskId}
+- **Update Task (PUT):**  
+  `http://localhost:8080/api/admin/task/{taskId}`
 
-Get Task by ID (GET):
-http://localhost:8080/api/admin/task/{taskId}
+- **Search Tasks by Title (GET):**  
+  `http://localhost:8080/api/admin/task/search/{searchTerm}?page=0&size=10`
 
-Update Task (PUT):
-http://localhost:8080/api/admin/task/{taskId}
+- **Create Comment (POST):**  
+  `http://localhost:8080/api/admin/task/comment/{taskId}?content=Great progress!`
 
-Search Tasks by Title (GET):
-http://localhost:8080/api/admin/task/search/{searchTerm}?page=0&size=10
+- **Get Comments by Task ID (GET):**  
+  `http://localhost:8080/api/admin/comments/{taskId}?page=0&size=10`
 
-Create Comment (POST):
-http://localhost:8080/api/admin/task/comment/{taskId}?content=Great progress!
+---
 
-Get Comments by Task ID (GET):
-http://localhost:8080/api/admin/comments/{taskId}?page=0&size=10
+### 👤 Employee APIs
 
-👤 Employee APIs
-Get Tasks by User ID (GET):
-http://localhost:8080/api/employee/tasks?page=0&size=10
+- **Get Tasks by User ID (GET):**  
+  `http://localhost:8080/api/employee/tasks?page=0&size=10`
 
-Update Task Status (GET):
-http://localhost:8080/api/employee/task/{taskId}/COMPLETED
+- **Update Task Status (GET):**  
+  `http://localhost:8080/api/employee/task/{taskId}/COMPLETED`
 
-Update Task (PUT):
-http://localhost:8080/api/employee/task/{taskId}
+- **Update Task (PUT):**  
+  `http://localhost:8080/api/employee/task/{taskId}`
 
-Create Comment (POST):
-http://localhost:8080/api/employee/task/comment/{taskId}?content=Nice work!
+- **Create Comment (POST):**  
+  `http://localhost:8080/api/employee/task/comment/{taskId}?content=Nice work!`
 
-Get Comments by Task ID (GET):
-http://localhost:8080/api/employee/comments/{taskId}?page=0&size=10
+- **Get Comments by Task ID (GET):**  
+  `http://localhost:8080/api/employee/comments/{taskId}?page=0&size=10`
 
-📷 Screenshots
-(Add any UI screenshots or diagrams here if available)
+---
 
-🛠️ Installation & Setup
-Clone the repository
-git clone https://github.com/yourusername/task-management-system.git
+## 🛠️ Installation & Setup
 
-Navigate to the project directory
-cd task-management-system
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/yourusername/task-management-system.git
 
-Run the project with your preferred IDE or with Maven
-mvn spring-boot:run
+- Navigate to the project directory cd task-management-system
+- Run the project with your preferred IDE or with Maven mvn spring-boot:run
 
-Visit:
-http://localhost:8080
+**Visit: http://localhost:8080**
 
-📧 Contact
-For any queries or feedback, feel free to contact me via [syedaezzajalal@gmail.com] or connect on LinkedIn via [https://www.linkedin.com/in/ezza-jalal-finland]
+##📧 Contact For any queries or feedback
+**Feel free to contact me via [syedaezzajalal@gmail.com] or connect on LinkedIn via [https://www.linkedin.com/in/ezza-jalal-finland]**
