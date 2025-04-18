@@ -123,12 +123,13 @@ This project demonstrates a fully functional task management system with two dis
 
 1. **Clone the repository**  
    ```bash
-   git clone https://github.com/yourusername/task-management-system.git
+   git clone https://github.com/EzzaJalal/task-management-system.git
 
 - Navigate to the project directory cd task-management-system
 - Run the project with your preferred IDE or with Maven mvn spring-boot:run
 
 **Visit: http://localhost:8080**
 
-##📧 Contact For any queries or feedback
+## 📧 Contact For any queries or feedback
+
 **Feel free to contact me via [syedaezzajalal@gmail.com] or connect on LinkedIn via [https://www.linkedin.com/in/ezza-jalal-finland]**
