@@ -5,6 +5,7 @@ A full-stack Task Management System built using Spring Boot, Maven, JWT Authenti
 This project demonstrates a fully functional task management system with two distinct user roles: Admin and Employee.
 
 🔐 Authentication
+
 User Sign Up
 
 Login
