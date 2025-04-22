@@ -37,7 +37,7 @@ This project demonstrates a fully functional task management system with two dis
 
 - **Backend:** Spring Boot, Spring Security, JWT, Maven  
 - **Frontend:** Thymeleaf, Bootstrap, JavaScript  
-- **Database:** *(Add your database here – e.g., PostgreSQL/MariaDB)*  
+- **Database:** *(PostgreSQL)*  
 - **Email Service:** *(e.g., JavaMailSender)*  
 
 ---
