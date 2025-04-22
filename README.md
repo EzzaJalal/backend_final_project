@@ -126,7 +126,7 @@ This project demonstrates a fully functional task management system with two dis
    git clone https://github.com/EzzaJalal/task-management-system.git
 
 - Navigate to the project directory cd task-management-system
-- Run the project with your preferred IDE or with Maven mvn spring-boot:run
+- Run the project with your preferred IDE or with Maven mvn spring-boot: run
 
 **Visit: http://localhost:8080**
 
